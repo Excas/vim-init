@@ -34,7 +34,7 @@ endfunc
 "----------------------------------------------------------------------
 " 在 ~/.vim/bundles 下安装插件
 "----------------------------------------------------------------------
-call plug#begin(get(g:, 'bundle_home', '~/.vim/bundles'))
+call plug#begin(get(g:, 'bundle_home', '~/.config/nvim/bundles'))
 
 
 "----------------------------------------------------------------------
@@ -376,7 +376,7 @@ if index(g:bundle_group, 'ale') >= 0
 	function s:lintcfg(name)
 		let conf = s:path('tools/conf/')
 		let path1 = conf . a:name
-		let path2 = expand('~/.vim/linter/'. a:name)
+		let path2 = expand('~/.config/nvim/linter/'. a:name)
 		if filereadable(path2)
 			return path2
 		endif
@@ -387,8 +387,18 @@ if index(g:bundle_group, 'ale') >= 0
 	let g:ale_python_flake8_options = '--conf='.s:lintcfg('flake8.conf')
 	let g:ale_python_pylint_options = '--rcfile='.s:lintcfg('pylint.conf')
 	let g:ale_python_pylint_options .= ' --disable=W'
+
+	"自定义error和warning图标
+	let g:ale_sign_error = '✗'
+	let g:ale_sign_warning = '⚡'
+	let g:ale_echo_msg_error_str = 'E'
+	let g:ale_echo_msg_warning_str = 'W'
+	"普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
+	nmap sp <Plug>(ale_previous_wrap)
+	nmap sn <Plug>(ale_next_wrap)
+	" c/c++ 设置
 	let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-	let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+	let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++11'
 	let g:ale_c_cppcheck_options = ''
 	let g:ale_cpp_cppcheck_options = ''
 
@@ -517,6 +527,14 @@ if index(g:bundle_group, 'leaderf') >= 0
 	endif
 endif
 
+"----------------------------------------------------------------------
+" 自定义插件
+"----------------------------------------------------------------------
+Plug 'Valloric/YouCompleteMe'
+Plug 'liuchengxu/space-vim-theme'
+Plug 'ayu-theme/ayu-vim'
+" 主题
+" colorscheme space_vim_theme
 
 "----------------------------------------------------------------------
 " 结束插件安装
